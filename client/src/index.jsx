@@ -5,7 +5,9 @@ import Landing from './components/landing/index.jsx';
 import bootstrap from './theme/bootstrap.theme.css';
 import io from 'socket.io-client';
 
+import Header from './components/header/header.jsx';
 
+ 
 
 ga.initialize('UA-72486368-1');
 
@@ -17,11 +19,11 @@ ga.event({
   value: 1234
 });
 
-var socket = io.connect('http://localhost:8090');
-socket.on('news', function (data) {
-  console.log(data);
-  socket.emit('my other event', { my: 'data' });
-});
+// var socket = io.connect('http://localhost:8090');
+// socket.on('news', function (data) {
+//   console.log(data);
+//   socket.emit('my other event', { my: 'data' });
+// });
 
 
-ReactDOM.render(<Landing />, document.getElementById('app'));
+ReactDOM.render(<Header />, document.getElementById('app'));
