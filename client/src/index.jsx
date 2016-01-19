@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import ga from 'react-ga';
 import Landing from './components/landing/index.jsx';
 import bootstrap from './theme/bootstrap.theme.css';
+import appCss from './css/app.scss';
 import io from 'socket.io-client';
 
 import Header from './components/header/header.jsx';
 
- 
+
 
 ga.initialize('UA-72486368-1');
 
@@ -26,4 +27,10 @@ ga.event({
 // });
 
 
-ReactDOM.render(<Header />, document.getElementById('app'));
+ReactDOM.render(
+  <div>
+    <Header />
+    <div className="container">
+      <Landing />
+    </div>
+  </div>, document.getElementById('app'));

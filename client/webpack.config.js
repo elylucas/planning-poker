@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+var sassExtract = new ExtractTextPlugin('app.css');
+
 module.exports = {
   devtool: 'source-map',
   entry: {
@@ -19,7 +21,9 @@ module.exports = {
             exclude: /node_modules/,
             loader: 'react-hot!babel'
         },
-        { test: /\.css$/, exclue: /node_modules/, loader: ExtractTextPlugin.extract('style', 'css') },
+        { test: /\.css$/, loader: ExtractTextPlugin.extract('style', 'css') },
+        { test: /\.scss$/, loader: 'style!css!sass'},
+        //{ test: /\.scss$/, loader: sassExtract.extract('style', 'css', 'sass')},
         { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
         { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
         { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
@@ -43,6 +47,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin('style.css', {
         allChunks: true
-    })
+    }),
+    //sassExtract
   ]
 }

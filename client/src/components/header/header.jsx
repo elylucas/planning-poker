@@ -4,7 +4,7 @@ let Header = React.createClass({
   render(){
     return(
       <div>
-        <nav className="navbar navbar-inverse navbar-fixed-top">
+        <nav className="navbar navbar-fixed-top">
           <div className="container">
             <div className="navbar-header">
               <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -13,14 +13,7 @@ let Header = React.createClass({
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <a className="navbar-brand" href="#">Project name</a>
-            </div>
-            <div id="navbar" className="collapse navbar-collapse">
-              <ul className="nav navbar-nav">
-                <li className="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-              </ul>
+              <a className="navbar-brand" href="#"><span style={{color: '#fff'}}>agile</span><span style={{color: 'rgb(255, 145, 0)'}}>Poker</span></a>
             </div>
           </div>
         </nav>
