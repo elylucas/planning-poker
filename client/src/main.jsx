@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ga from 'react-ga';
 import Landing from './components/landing/index.jsx';
 import bootstrap from './theme/bootstrap.theme.css';
+//import bootstrap from 'bootstrap/dist/css/bootstrap.css';
 import appCss from './css/app.scss';
 import io from 'socket.io-client';
 

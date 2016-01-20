@@ -9,9 +9,9 @@ module.exports = {
     app: [
       'webpack-dev-server/client?http://localhost:8080',
       'webpack/hot/only-dev-server',
-      './src/index.jsx'
+      './src/main.jsx'
     ],
-    vendors: ['react']
+    //vendors: ['react']
   },
 
   module: {
@@ -43,7 +43,7 @@ module.exports = {
       hot: true
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
+    //new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
     new webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin('style.css', {
         allChunks: true
