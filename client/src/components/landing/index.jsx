@@ -1,7 +1,40 @@
 import React from 'react';
+import { Link } from 'react-router'
+var VelocityComponent = require('velocity-react/velocity-component');
+require('velocity-animate/velocity.ui');
 
 const Landing = React.createClass({
+
+  getInitialState(){
+    return {
+      showCreateRoom: false
+    }
+  },
+
+  showRoom(){
+    this.setState({
+      showCreateRoom: !this.state.showCreateRoom
+    })
+  },
+
   render(){
+
+    //let animation = 'transition.slideDown' + (this.state.showCreateRoom  ? 'In' : 'Out');
+    let animation = 'fade' + (this.state.showCreateRoom  ? 'In' : 'Out');
+    let buttonAnimation = 'fade' + (this.state.showCreateRoom  ? 'Out' : 'In');
+
+    let animationProps;
+    if (this.state.showCreateRoom) {
+      animationProps = {
+        duration: 200,
+        animation: 'slideDown'
+      };
+    } else {
+      animationProps = {
+        duration: 200, // longer due to swinging
+        animation: 'slideUp'
+      };
+    }
 
     let containerStyle = {
       display: 'flex',
@@ -10,6 +43,22 @@ const Landing = React.createClass({
       margin: '5em auto'
     }
 
+    let buttonStyle = {
+      margin: '10px'
+    }
+
+    let actionStyle = {
+      position: 'relative',
+      top: 0,
+      left: 0
+    };
+
+    var enterAnimation = {
+            animation: this.state.showCreateRoom ? 'fadeIn' : 'fadeOut',//{opacity: 1},
+            duration: 800,
+            //delay: 500
+        };
+
     return(
       <div style={containerStyle}>
         <div>
@@ -17,26 +66,27 @@ const Landing = React.createClass({
           <p>
             To start, either create a new room, or join an existing room by entering the room number.
           </p>
-          <h3>Create New Room:</h3>
-          <form>
-            <div className="form-group">
-              <label for="exampleInputEmail1">Name</label>
-              <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" />
+          <Link to="/room">Room</Link>
+          <VelocityComponent {...animationProps}>
+            <div style={actionStyle}>
+              <h4>Create New Room:</h4>
+              <form>
+                <div className="form-group">
+                  <label for="exampleInputEmail1">Name</label>
+                  <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" />
+                </div>
+                <button className="btn btn-primary">Create New Room</button>
+                <button className="btn btn-primary" onClick={this.showRoom}>Cancel</button>
+              </form>
             </div>
-            <button className="btn btn-primary">Create New Room</button>
-          </form>
-          <h3>Join Existing Room:</h3>
-          <form>
-            <div className="form-group">
-              <label for="exampleInputEmail1">Name</label>
-              <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" />
+          </VelocityComponent>
+
+          <VelocityComponent animation={buttonAnimation} delay={0}>
+            <div style={actionStyle}>
+              <button style={buttonStyle} className="btn btn-block btn-primary" onClick={this.showRoom}>Create New Room</button>
+              <button style={buttonStyle} className="btn btn-block btn-primary">Join Existing Room</button>
             </div>
-            <div className="form-group">
-              <label for="exampleInputEmail1">Room Number</label>
-              <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" />
-            </div>
-            <button className="btn btn-primary">Join Room</button>
-          </form>
+          </VelocityComponent>
         </div>
       </div>
     )
@@ -44,3 +94,23 @@ const Landing = React.createClass({
 })
 
 export default Landing;
+// <h3>Create New Room:</h3>
+// <form>
+//   <div className="form-group">
+//     <label for="exampleInputEmail1">Name</label>
+//     <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" />
+//   </div>
+//   <button className="btn btn-primary">Create New Room</button>
+// </form>
+// <h3>Join Existing Room:</h3>
+// <form>
+//   <div className="form-group">
+//     <label for="exampleInputEmail1">Name</label>
+//     <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" />
+//   </div>
+//   <div className="form-group">
+//     <label for="exampleInputEmail1">Room Number</label>
+//     <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" />
+//   </div>
+//   <button className="btn btn-primary">Join Room</button>
+// </form>

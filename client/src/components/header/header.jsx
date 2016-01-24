@@ -17,7 +17,7 @@ let Header = React.createClass({
             </div>
           </div>
         </nav>
-      </div>
+      </div>  
     )
   }
 });
