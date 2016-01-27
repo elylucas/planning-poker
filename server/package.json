@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node index.js",
-    "test": "mocha --compilers js:babel-core/register --require ./test/test-helper.js --recursive",
+    "test": "mocha --compilers js:babel-core/register --require ./test/test-helper.js --recursive \"src/**/*.test.js\"",
     "test:watch": "npm run test -- --watch"
   },
   "repository": {
@@ -29,6 +29,7 @@
     "socket.io": "^1.4.4"
   },
   "dependencies": {
-    "immutable": "^3.7.6"
+    "immutable": "^3.7.6",
+    "redux": "^3.0.6"
   }
 }

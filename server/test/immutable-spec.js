@@ -7,15 +7,30 @@ describe('immutability', () => {
   describe('a number', () => {
 
     function increment(currentState) {
-      return currentState + 1;
+      //return currentState + 1;
+      currentState = currentState + 1;
+      return currentState;
     }
 
-    it('is immutable', () => {
+    function append(currentState, newString) {
+      return currentState + newString;
+    }
+
+    it('number is immutable', () => {
       let state = 42;
       let nextState = increment(state);
 
       expect(nextState).to.equal(43);
       expect(state).to.equal(42);
+    });
+
+    it('string is immutable', () => {
+      let state = 'test';
+      let newString = '123';
+      let nextState = append(state, newString);
+
+      expect(nextState).to.equal('test123');
+      expect(state).to.equal('test');
     });
 
   });

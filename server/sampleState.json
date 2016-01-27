@@ -1,0 +1,19 @@
+[
+  {
+    "roomId": "1234",
+    "users": [
+      {
+        "name": "Ely",
+        "vote": "1",
+        "isSpectator": false,
+        "isAFK": false
+      },
+      {
+        "name": "Joel",
+        "vote": null,
+        "isSpectator": false,
+        "isAFK": false
+      }
+    ]
+  }
+]
