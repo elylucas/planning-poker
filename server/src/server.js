@@ -6,8 +6,13 @@ export default function startServer(store){
   io.set('origins', 'http://localhost:8080');
   io.on('connection', (socket) => {
     //socket.emit('state', store.getState().toJS());
-    //socket.on('action', store.dispatch.bind(store));
+    //socket.on('createRoom', store.dispatch.bind(store));
+    socket.on('createRoom', (data) => {
+      console.log(data);
+      socket.emit('roomCreated', data);
+    });
   });
+
   // io.on('connection', (socket) =>{
   //   socket.emit('news', {hello: 'world'});
   //   setInterval(() => {

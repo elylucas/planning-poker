@@ -30,12 +30,12 @@ ga.pageview('/');
 // });
 
 var socket = io.connect('http://localhost:8090');
-socket.on('state', function (data) {
-  console.log(data);
+socket.on('roomCreated', function (data) {
+  console.log('roomCreated: ' + data);
   //socket.emit('my other event', { my: 'data' });
 });
 
-const createStoreWithMiddleware = applyMiddleware(remoteActionMiddleware)(createStore);
+const createStoreWithMiddleware = applyMiddleware(remoteActionMiddleware(socket))(createStore);
 const store = createStoreWithMiddleware(reducer);
 
 var App = React.createClass({
@@ -44,7 +44,7 @@ var App = React.createClass({
       <div>
         <Header />
         <div className="container">
-          <Landing createRoom={(name)=> { console.log('create room: ' + name)}} />
+          <Landing createRoom={(name)=> { store.dispatch(createRoom(name)) }} />
         </div>
       </div>
     )

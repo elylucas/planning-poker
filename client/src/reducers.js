@@ -1,4 +1,5 @@
 import { CREATE_ROOM } from './action_creators';
+import { createRoom } from './room';
 
 function room(state = [], action) {
   switch (action.type) {
