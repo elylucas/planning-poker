@@ -2,12 +2,11 @@ import Server from 'socket.io';
 
 export default function startServer(store){
   const io = new Server().attach(8090);
-  
+
   io.set('origins', 'http://localhost:8080');
   io.on('connection', (socket) => {
-    console.log(store.getState().toJS())
-    socket.emit('state', store.getState().toJS());
-    socket.on('action', store.dispatch.bind(store));
+    //socket.emit('state', store.getState().toJS());
+    //socket.on('action', store.dispatch.bind(store));
   });
   // io.on('connection', (socket) =>{
   //   socket.emit('news', {hello: 'world'});

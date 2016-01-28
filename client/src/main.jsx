@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Link, browserHistory } from 'react-router'
+import {createStore, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux';
+import reducer from './reducers';
+import {createRoom} from './action_creators';
+import remoteActionMiddleware from './remote_action_middleware';
+
 import ga from 'react-ga';
 import Landing from './components/landing/index.jsx';
 import Room from './components/room/index.jsx';
@@ -17,11 +23,11 @@ ga.initialize('UA-72486368-1');
 
 ga.pageview('/');
 
-ga.event({
-  category: 'Loading',
-  action: 'JoinRoom',
-  value: 1234
-});
+// ga.event({
+//   category: 'Loading',
+//   action: 'JoinRoom',
+//   value: 1234
+// });
 
 var socket = io.connect('http://localhost:8090');
 socket.on('state', function (data) {
@@ -29,24 +35,29 @@ socket.on('state', function (data) {
   //socket.emit('my other event', { my: 'data' });
 });
 
+const createStoreWithMiddleware = applyMiddleware(remoteActionMiddleware)(createStore);
+const store = createStoreWithMiddleware(reducer);
+
 var App = React.createClass({
   render(){
     return(
       <div>
         <Header />
         <div className="container">
-          <Landing />
+          <Landing createRoom={(name)=> { console.log('create room: ' + name)}} />
         </div>
       </div>
     )
   }
 });
 
-ReactDOM.render((
-  <Router>
-  <Route path="/" component={App}>
+const routes = <Route><Route path="/" component={App} />
+               <Route path="/room" component={Room} /></Route>
 
-  </Route>
-  <Route path="/room" component={Room} />
-</Router>
+ReactDOM.render((
+  <Provider store={store}>
+    <Router>
+    {routes}
+    </Router>
+  </Provider>
 ), document.getElementById('app'))

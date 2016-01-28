@@ -17,9 +17,12 @@ const Landing = React.createClass({
     })
   },
 
-  render(){
+  handleCreateRoomClick(e) {
+    let name = this.refs.name.value;
+    this.props.createRoom(name);
+  },
 
-    //let animation = 'transition.slideDown' + (this.state.showCreateRoom  ? 'In' : 'Out');
+  render(){
     let animation = 'fade' + (this.state.showCreateRoom  ? 'In' : 'Out');
     let buttonAnimation = 'fade' + (this.state.showCreateRoom  ? 'Out' : 'In');
 
@@ -70,14 +73,14 @@ const Landing = React.createClass({
           <VelocityComponent {...animationProps}>
             <div style={actionStyle}>
               <h4>Create New Room:</h4>
-              <form>
+
                 <div className="form-group">
                   <label for="exampleInputEmail1">Name</label>
-                  <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email" />
+                  <input type="text" className="form-control" ref="name" placeholder="Name" />
                 </div>
-                <button className="btn btn-primary">Create New Room</button>
+                <button className="btn btn-primary" onClick={this.handleCreateRoomClick}>Create New Room</button>
                 <button className="btn btn-primary" onClick={this.showRoom}>Cancel</button>
-              </form>
+
             </div>
           </VelocityComponent>
 
