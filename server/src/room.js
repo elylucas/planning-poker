@@ -1,9 +1,10 @@
 import {Map, List, fromJS} from 'immutable';
 
-export function createRoom(state = List(), roomId, user) {
-  return state.push(fromJS(
+export function createRoom(state, roomId, user) {
+  var newState = state.get('rooms').push(fromJS(
     {
-      roomId: roomId,
+      id: roomId,
       users: [user]
     }));
+  return state.set('rooms', newState);
 }

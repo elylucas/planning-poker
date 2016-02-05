@@ -1,5 +1,8 @@
-import {List} from 'immutable';
+import {List, Map} from 'immutable';
 
-export function setInitialState(state = List()){
+export function setInitialState(){
+  let state = Map({
+    rooms: List()
+  });
   return state;
 }

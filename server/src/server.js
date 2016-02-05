@@ -1,25 +1,23 @@
 import Server from 'socket.io';
+import {createRoom} from './action_creators';
+import roomIdGen from './util/room-id-gen';
 
 export default function startServer(store){
   const io = new Server().attach(8090);
 
   io.set('origins', 'http://localhost:8080');
   io.on('connection', (socket) => {
-    //socket.emit('state', store.getState().toJS());
-    //socket.on('createRoom', store.dispatch.bind(store));
-    socket.on('createRoom', (data) => {
-      console.log(data);
-      socket.emit('roomCreated', data);
+    socket.on('createRoom', (name) => {
+      let roomId = roomIdGen();
+      console.log(name + ' - ' + roomId);
+      store.dispatch(createRoom(roomId,
+          {'name': name, isSpectator: false, isAFK: false, vote: ''}
+      ));
+      socket.join('room-' + roomId)
+      var room = store.getState().get('rooms').find((room)=>{
+        return room.get('id') === roomId;
+      })
+      socket.emit('joinedRoom', room);
     });
   });
-
-  // io.on('connection', (socket) =>{
-  //   socket.emit('news', {hello: 'world'});
-  //   setInterval(() => {
-  //     socket.emit('news', {hello: 'world'});
-  //   },1000);
-  //   socket.on('my other event', (data) =>{
-  //     console.log(data);
-  //   })
-  // })
 }

@@ -1,23 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Link, browserHistory } from 'react-router'
+import { Router, Route, IndexRoute } from 'react-router'
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from './reducers';
-import {createRoom} from './action_creators';
+import {createRoom, roomCreated} from './action_creators';
 import remoteActionMiddleware from './remote_action_middleware';
+import createHashHistory from 'history/lib/createHashHistory'
 
 import ga from 'react-ga';
-import Landing from './components/landing/index.jsx';
-import Room from './components/room/index.jsx';
+
+
 import bootstrap from './theme/bootstrap.theme.css';
-//import bootstrap from 'bootstrap/dist/css/bootstrap.css';
 import appCss from './css/app.scss';
 import io from 'socket.io-client';
 
-import Header from './components/header/header.jsx';
+import App from   './app';
+import Landing from './components/landing/index.jsx';
+import Room from './components/room/index.jsx';
 
 
+const history = createHashHistory();
 
 ga.initialize('UA-72486368-1');
 
@@ -32,32 +35,23 @@ ga.pageview('/');
 var socket = io.connect('http://localhost:8090');
 socket.on('roomCreated', function (data) {
   console.log('roomCreated: ' + data);
-  //socket.emit('my other event', { my: 'data' });
 });
+
+socket.on('joinedRoom', (room)=>{
+  store.dispatch(roomCreated(room));
+  history.pushState(null, 'room/' + room.id);
+})
 
 const createStoreWithMiddleware = applyMiddleware(remoteActionMiddleware(socket))(createStore);
 const store = createStoreWithMiddleware(reducer);
 
-var App = React.createClass({
-  render(){
-    return(
-      <div>
-        <Header />
-        <div className="container">
-          <Landing createRoom={(name)=> { store.dispatch(createRoom(name)) }} />
-        </div>
-      </div>
-    )
-  }
-});
-
-const routes = <Route><Route path="/" component={App} />
-               <Route path="/room" component={Room} /></Route>
-
 ReactDOM.render((
   <Provider store={store}>
-    <Router>
-    {routes}
+    <Router history={history}>
+      <Route path="/" store={store} component={App}>
+        <IndexRoute component={Landing} />
+        <Route path="room/:roomId" component={Room} />
+      </Route>
     </Router>
   </Provider>
 ), document.getElementById('app'))
