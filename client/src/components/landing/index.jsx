@@ -30,8 +30,14 @@ const Landing = React.createClass({
   },
 
   handleCreateRoomClick(e) {
-    let name = this.refs.name.value;
+    let name = this.refs.createRoomName.value;
     this.props.createRoom(name);
+  },
+
+  handleJoinRoomClick(e) {
+    let name = this.refs.joinRoomName.value;
+    let roomId = this.refs.roomId.value;
+    this.props.joinRoom(name, roomId);
   },
 
   render(){
@@ -61,7 +67,7 @@ const Landing = React.createClass({
 
                 <div className="form-group">
                   <label for="exampleInputEmail1">Name</label>
-                  <input type="text" className="form-control" ref="name" placeholder="Name" />
+                  <input type="text" className="form-control" ref="createRoomName" placeholder="Name" />
                 </div>
                 <button className="btn btn-primary" onClick={this.handleCreateRoomClick}>Create Room</button>
                 <button className="btn btn-primary" onClick={this.showCreateRoom}>Cancel</button>
@@ -75,19 +81,19 @@ const Landing = React.createClass({
 
                 <div className="form-group">
                   <label for="exampleInputEmail1">Name</label>
-                  <input type="text" className="form-control" ref="name" placeholder="Name" />
+                  <input type="text" className="form-control" ref="joinRoomName" placeholder="Name" />
                 </div>
                 <div className="form-group">
                   <label for="exampleInputEmail1">Room Id</label>
-                  <input type="text" className="form-control" ref="roomid" placeholder="Name" />
+                  <input type="text" className="form-control" ref="roomId" placeholder="Room Id" />
                 </div>
-                <button className="btn btn-primary" onClick={this.handleJoinRoom}>Join Room</button>
+                <button className="btn btn-primary" onClick={this.handleJoinRoomClick}>Join Room</button>
                 <button className="btn btn-primary" onClick={this.showJoinRoom}>Cancel</button>
 
             </div>
           </VelocityComponent>
 
-          <VelocityComponent animation={this.state.showCreateRoom || this.state.showJoinRoom ? 'fadeOut' : 'fadeIn'} duration={300}>
+          <VelocityComponent animation={this.state.showCreateRoom || this.state.showJoinRoom ? 'fadeOut' : 'fadeIn'} duration={400}>
             <div>
               <button style={buttonStyle} className="btn btn-block btn-primary" onClick={this.showCreateRoom}>Create New Room</button>
               <button style={buttonStyle} className="btn btn-block btn-primary" onClick={this.showJoinRoom}>Join Existing Room</button>

@@ -40,7 +40,12 @@ socket.on('roomCreated', function (data) {
 socket.on('joinedRoom', (room)=>{
   store.dispatch(roomCreated(room));
   history.pushState(null, 'room/' + room.id);
-})
+});
+
+socket.on('roomJoined', (room)=>{
+  store.dispatch(roomCreated(room));
+  history.pushState(null, 'room/' + room.id);
+});
 
 const createStoreWithMiddleware = applyMiddleware(remoteActionMiddleware(socket))(createStore);
 const store = createStoreWithMiddleware(reducer);

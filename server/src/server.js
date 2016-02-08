@@ -7,6 +7,7 @@ export default function startServer(store){
 
   io.set('origins', 'http://localhost:8080');
   io.on('connection', (socket) => {
+
     socket.on('createRoom', (name) => {
       let roomId = roomIdGen();
       console.log(name + ' - ' + roomId);
@@ -16,8 +17,21 @@ export default function startServer(store){
       socket.join('room-' + roomId)
       var room = store.getState().get('rooms').find((room)=>{
         return room.get('id') === roomId;
-      })
+      });
       socket.emit('joinedRoom', room);
     });
+
+    socket.on('joinRoom', (name, roomId) =>{
+      console.log(name, roomId)
+
+      //call dispatch to join room
+      
+      var room = store.getState().get('rooms').find((room)=>{
+        return room.get('id') === roomId;
+      });
+
+      socket.emit('joinedRoom', room);
+    });
+
   });
 }
