@@ -18,3 +18,7 @@ export function roomJoined(state = Map(), room) {
   state.set('isRoomJoining', false);
   return state.set('room', room);
 }
+
+export function roomUpdated(state = Map(), room){
+  return state.set('room', room);
+}

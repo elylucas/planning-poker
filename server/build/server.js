@@ -22,16 +22,28 @@ function startServer(store) {
 
   io.set('origins', 'http://localhost:8080');
   io.on('connection', function (socket) {
+
     socket.on('createRoom', function (name) {
       var roomId = (0, _roomIdGen2.default)();
+      var userId = (0, _roomIdGen2.default)();
       console.log(name + ' - ' + roomId);
-      store.dispatch((0, _action_creators.createRoom)(roomId, { 'name': name, isSpectator: false, isAFK: false, vote: '' }));
+      store.dispatch((0, _action_creators.createRoom)(roomId, { id: userId, name: name, isSpectator: false, isAFK: false, vote: '' }));
       socket.join('room-' + roomId);
-      console.log(store.getState());
-      var room = store.getState().get('rooms').find(function (room) {
-        return room.id === roomId;
+
+      var room = store.getState().rooms.find(function (room) {
+        return room.get('id') === roomId;
       });
-      console.log(store.getState());
+      socket.emit('joinedRoom', room);
+    });
+
+    socket.on('joinRoom', function (name, roomId) {
+      console.log(name, roomId);
+      var userId = (0, _roomIdGen2.default)();
+      store.dispatch((0, _action_creators.joinRoom)(roomId, { id: userId, name: name, isSpectator: false, isAFK: false, vote: '' }));
+
+      var room = store.getState().rooms.find(function (room) {
+        return room.get('id' === roomId);
+      });
       socket.emit('joinedRoom', room);
     });
   });

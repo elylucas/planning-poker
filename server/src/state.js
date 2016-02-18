@@ -1,8 +1,8 @@
 import {List, Map} from 'immutable';
 
 export function setInitialState(){
-  let state = Map({
-    rooms: List()
-  });
+  let state = {
+    rooms: Map()
+  };
   return state;
 }

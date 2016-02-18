@@ -2,6 +2,7 @@ export const CREATE_ROOM_REQUEST = 'CREATE_ROOM_REQUEST';
 export const CREATE_ROOM_RESPONSE = 'CREATE_ROOM_RESPONSE';
 export const JOIN_ROOM_REQUEST = 'JOIN_ROOM_REQUEST';
 export const JOIN_ROOM_RESPONSE = 'JOIN_ROOM_RESPONSE';
+export const ROOM_UPDATED_ALERT = 'ROOM_UPDATED_ALERT';
 
 export function createRoom(name){
   return{
@@ -38,11 +39,9 @@ export function roomJoined(room){
   };
 }
 
-export const ROOM_UPDATE = 'ROOM_UPDATE';
-
-export function roomUpdate(room){
+export function roomUpdated(room){
   return {
-    type: ROOM_UPDATE,
+    type: ROOM_UPDATED_ALERT,
     room
   }
 }

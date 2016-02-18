@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf build && mkdir build",
-    "build-server": "babel --sourcemaps -d ./build ./src -s",
+    "build-server": "babel --source-maps -d ./build ./src -s",
     "build": "npm run clean && npm run build-server",
     "start-build": "npm run build && node --debug ./build/index.js",
     "start": "nodemon --exec babel-node ./src/index.js",
-    "debug": "babel-node --sourcemaps --debug ./src/index.js",
+    "debug": "babel-node-debug -p 8091 --no-preload --debug-brk ./src/index.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test-helper.js --recursive \"src/**/*.test.js\"",
     "test:watch": "npm run test -- --watch"
   },

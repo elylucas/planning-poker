@@ -8,9 +8,9 @@ exports.setInitialState = setInitialState;
 var _immutable = require('immutable');
 
 function setInitialState() {
-  var state = (0, _immutable.Map)({
-    rooms: (0, _immutable.List)()
-  });
+  var state = {
+    rooms: (0, _immutable.Map)()
+  };
   return state;
 }
 //# sourceMappingURL=state.js.map

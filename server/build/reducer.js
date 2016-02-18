@@ -3,20 +3,35 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = reducer;
+exports.default = rooms;
 
-var _room = require('./room');
+var _rooms = require('./rooms');
 
 var _state = require('./state');
 
 var _immutable = require('immutable');
 
-function reducer(state, action) {
+var _redux = require('redux');
+
+function rooms() {
+  var state = arguments.length <= 0 || arguments[0] === undefined ? (0, _immutable.List)() : arguments[0];
+  var action = arguments[1];
+
   switch (action.type) {
-    case 'SET_INITIAL_STATE':
-      return (0, _state.setInitialState)();
     case 'CREATE_ROOM':
-      return (0, _room.createRoom)(state, action.roomId, action.user);
+      var newRooms = (0, _rooms.createRoom)(state, action.roomId, action.user);
+      return newRooms;
+    case 'JOIN_ROOM':
+      var newRooms = (0, _rooms.joinRoom)(state, action.roomId, action.user);
+      return newRooms;
+    default:
+      return state;
   }
 }
+
+var reducer = (0, _redux.combineReducers)({
+  rooms: rooms
+});
+
+exports.default = reducer;
 //# sourceMappingURL=reducer.js.map

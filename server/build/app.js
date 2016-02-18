@@ -16,8 +16,11 @@ var _store2 = _interopRequireDefault(_store);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var store = exports.store = (0, _store2.default)();
-
-store.dispatch({ type: 'SET_INITIAL_STATE' });
+store.subscribe(function () {
+  //console.log(store.getState())
+});
+//store.dispatch({type: 'SET_INITIAL_STATE'});
 console.log('server started');
+
 (0, _server2.default)(store);
 //# sourceMappingURL=app.js.map

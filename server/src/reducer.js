@@ -1,12 +1,23 @@
-import {createRoom} from './room';
+import {createRoom, joinRoom} from './rooms';
 import {setInitialState} from './state';
-import {List} from 'immutable';
+import {List, Map} from 'immutable';
+import { combineReducers } from 'redux';
 
-export default function reducer(state, action){
+export default function rooms(state = List(), action){
   switch(action.type){
-    case 'SET_INITIAL_STATE':
-      return setInitialState();
     case 'CREATE_ROOM':
-      return createRoom(state, action.roomId, action.user);
+      var newRooms = createRoom(state, action.roomId, action.user);
+      return newRooms;
+    case 'JOIN_ROOM':
+      let newRooms = joinRoom(state, action.roomId, action.user);
+      return newRooms;
+    default:
+      return state;
   }
 }
+
+const reducer = combineReducers({
+  rooms
+});
+
+export default reducer;

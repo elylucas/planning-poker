@@ -4,7 +4,7 @@ import { Router, Route, IndexRoute } from 'react-router'
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from './reducers';
-import {createRoom, roomCreated} from './action_creators';
+import {createRoom, roomCreated, roomUpdated} from './action_creators';
 import remoteActionMiddleware from './remote_action_middleware';
 import createHashHistory from 'history/lib/createHashHistory'
 
@@ -46,6 +46,10 @@ socket.on('roomJoined', (room)=>{
   store.dispatch(roomCreated(room));
   history.pushState(null, 'room/' + room.id);
 });
+
+socket.on('roomUpdated', (room) => {
+  store.dispatch(roomUpdated(room));
+})
 
 const createStoreWithMiddleware = applyMiddleware(remoteActionMiddleware(socket))(createStore);
 const store = createStoreWithMiddleware(reducer);

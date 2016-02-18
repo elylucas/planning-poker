@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import _ from 'lodash';
 
 class Room extends Component{
 
@@ -7,21 +8,16 @@ class Room extends Component{
     super(props);
   }
 
-
-
   render(){
-
-
-
     return(
       <div>
         <div>Room {this.props.room.id}</div>
-        <ul>{this.props.room.users.map(user =>
-                                    <li>{user.name}</li>)}</ul>
+        <ul>
+          {_.map(this.props.room.users, (user) => <li>{user.name}</li>)}
+        </ul>
       </div>
     )
   }
-
 }
 
 function select(state) {
