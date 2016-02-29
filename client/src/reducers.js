@@ -1,5 +1,5 @@
-import { CREATE_ROOM_REQUEST, CREATE_ROOM_RESPONSE, JOIN_ROOM_REQUEST, JOIN_ROOM_RESPONSE, ROOM_UPDATED_ALERT } from './action_creators';
-import { createRoom, roomCreated, joinRoom, roomJoined , roomUpdated} from './room';
+import { CREATE_ROOM_REQUEST, CREATE_ROOM_RESPONSE, JOIN_ROOM_REQUEST, JOIN_ROOM_RESPONSE, ROOM_UPDATED_ALERT, CAST_VOTE_REQUEST } from './action_creators';
+import { createRoom, roomCreated, joinRoom, roomJoined , roomUpdated, castVote} from './room';
 
 function room(state, action) {
   switch (action.type) {
@@ -17,6 +17,9 @@ function room(state, action) {
       break;
     case ROOM_UPDATED_ALERT:
       return roomUpdated(state, action.room);
+      break;
+    case CAST_VOTE_REQUEST:
+      return castVote(state, action.vote, action.roomId);
       break;
     default:
       return state;

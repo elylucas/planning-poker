@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {createRoom, joinRoom} from '../rooms';
+import {createRoom, joinRoom, leaveRoom, castVote} from '../rooms';
 import {Map, List, fromJS} from 'immutable';
 
 describe('Room', function(){
@@ -49,6 +49,9 @@ describe('Room', function(){
       expect(newState.size).to.equal(2);
     });
 
+  });
+
+  describe('joinRoom', () => {
     it('should join user to room when new user joins', ()=>{
       var user = {
         id: '4567',
@@ -65,7 +68,7 @@ describe('Room', function(){
             users: [user]
           }
         ]
-      ); 
+      );
 
       const newUser = {
         id: '6789',
@@ -88,6 +91,79 @@ describe('Room', function(){
         ]
       ));
     });
+
+  });
+
+  describe('castVote', () => {
+    it('should update user with vote when vote cast', () => {
+      var user = {
+        id: '4567',
+        name: 'Joe',
+        vote: null,
+        isSpectator: false,
+        isAfk: false
+      };
+
+      var state = fromJS(
+        [
+          {
+            id: '1234',
+            users: [user]
+          }
+        ]
+      );
+
+      let newState = castVote(state, '4567', '1234', '8');
+      expect(newState).to.equal(fromJS(
+        [
+          {
+            id: '1234',
+            users: [
+              Object.assign(user, {vote: '8'})
+            ]
+          }
+        ]
+      ));
+    })
+  });
+
+  describe('leaveRoom', ()=>{
+
+    it('should remove the user from the room when a user leaves', ()=>{
+
+      var user1 = {
+        id: 'user123',
+        name: 'Joe',
+        vote: null,
+        isSpectator: false,
+        isAfk: false
+      };
+
+      var user2 = Object.assign(user1, {id: 'user456'});
+
+      var state = fromJS(
+        [
+          {
+            id: 'room123',
+            users: [user1, user2]
+          }
+        ]
+      );
+
+      let newState = leaveRoom(state, 'room123', 'user123');
+
+      expect(newState).to.equal(fromJS(
+        [
+          {
+            id: 'room123',
+            users: [
+              user2
+            ]
+          }
+        ]
+      ));
+
+    })
 
   });
 

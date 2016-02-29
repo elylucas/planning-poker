@@ -6,3 +6,13 @@ export default socket => store => next => action => {
   }
   return next(action);
 }
+
+function socket(){
+  return function store(){
+    return function next(){
+      return function action(){
+
+      }
+    }
+  }
+}

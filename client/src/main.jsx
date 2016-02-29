@@ -1,23 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute } from 'react-router'
-import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import reducer from './reducers';
-import {createRoom, roomCreated, roomUpdated} from './action_creators';
-import remoteActionMiddleware from './remote_action_middleware';
+//import reducer from './reducers';
+
+
 import createHashHistory from 'history/lib/createHashHistory'
+import configureSocket from './configureSocket';
+import configureStore from './configureStore';
 
 import ga from 'react-ga';
 
 
 import bootstrap from './theme/bootstrap.theme.css';
 import appCss from './css/app.scss';
-import io from 'socket.io-client';
 
 import App from   './app';
 import Landing from './components/landing/index.jsx';
 import Room from './components/room/index.jsx';
+import RoomUX from './components/ux/roomux.jsx';
 
 
 const history = createHashHistory();
@@ -32,27 +33,10 @@ ga.pageview('/');
 //   value: 1234
 // });
 
-var socket = io.connect('http://localhost:8090');
-socket.on('roomCreated', function (data) {
-  console.log('roomCreated: ' + data);
-});
-
-socket.on('joinedRoom', (room)=>{
-  store.dispatch(roomCreated(room));
-  history.pushState(null, 'room/' + room.id);
-});
-
-socket.on('roomJoined', (room)=>{
-  store.dispatch(roomCreated(room));
-  history.pushState(null, 'room/' + room.id);
-});
-
-socket.on('roomUpdated', (room) => {
-  store.dispatch(roomUpdated(room));
-})
-
-const createStoreWithMiddleware = applyMiddleware(remoteActionMiddleware(socket))(createStore);
-const store = createStoreWithMiddleware(reducer);
+const socket = configureSocket((cb)=> {
+  store.dispatch(cb);
+}, history);
+const store = configureStore(socket);
 
 ReactDOM.render((
   <Provider store={store}>
@@ -60,6 +44,7 @@ ReactDOM.render((
       <Route path="/" store={store} component={App}>
         <IndexRoute component={Landing} />
         <Route path="room/:roomId" component={Room} />
+        <Route path="ux/room" component={RoomUX} />
       </Route>
     </Router>
   </Provider>

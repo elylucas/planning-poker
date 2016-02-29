@@ -25,7 +25,7 @@ function startServer(store) {
 
     socket.on('createRoom', function (name) {
       var roomId = (0, _roomIdGen2.default)();
-      var userId = (0, _roomIdGen2.default)();
+      var userId = socket.id;
       console.log(name + ' - ' + roomId);
       store.dispatch((0, _action_creators.createRoom)(roomId, { id: userId, name: name, isSpectator: false, isAFK: false, vote: '' }));
       socket.join('room-' + roomId);
@@ -42,9 +42,23 @@ function startServer(store) {
       store.dispatch((0, _action_creators.joinRoom)(roomId, { id: userId, name: name, isSpectator: false, isAFK: false, vote: '' }));
 
       var room = store.getState().rooms.find(function (room) {
-        return room.get('id' === roomId);
+        return room.get('id') === roomId;
       });
+      io.to('room-' + roomId).emit('roomUpdated', room);
+
+      socket.join('room-' + roomId);
       socket.emit('joinedRoom', room);
+    });
+
+    socket.on('vote', function (vote, roomId) {
+      console.log('vote ' + vote);
+      console.log('roomId ' + roomId);
+
+      store.dispatch((0, _action_creators.castVote)(socket.id, roomId, vote));
+      var room = store.getState().rooms.find(function (room) {
+        return room.get('id') === roomId;
+      });
+      io.to('room-' + roomId).emit('roomUpdated', room);
     });
   });
 }

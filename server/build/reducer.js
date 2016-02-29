@@ -24,6 +24,9 @@ function rooms() {
     case 'JOIN_ROOM':
       var newRooms = (0, _rooms.joinRoom)(state, action.roomId, action.user);
       return newRooms;
+    case 'CAST_VOTE':
+      var newRooms = (0, _rooms.castVote)(state, action.userId, action.roomId, action.vote);
+      return newRooms;
     default:
       return state;
   }

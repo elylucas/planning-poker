@@ -3,6 +3,7 @@ export const CREATE_ROOM_RESPONSE = 'CREATE_ROOM_RESPONSE';
 export const JOIN_ROOM_REQUEST = 'JOIN_ROOM_REQUEST';
 export const JOIN_ROOM_RESPONSE = 'JOIN_ROOM_RESPONSE';
 export const ROOM_UPDATED_ALERT = 'ROOM_UPDATED_ALERT';
+export const CAST_VOTE_REQUEST = 'CAST_VOTE_REQUEST';
 
 export function createRoom(name){
   return{
@@ -43,5 +44,16 @@ export function roomUpdated(room){
   return {
     type: ROOM_UPDATED_ALERT,
     room
-  }
+  };
+}
+
+export function castVote(vote, roomId){
+  return{
+    type: CAST_VOTE_REQUEST,
+    vote,
+    roomId,
+    meta: (socket, action) => {
+      socket.emit('castVote', action.vote, action.roomId);
+    }
+  };
 }

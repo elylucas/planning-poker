@@ -20,5 +20,14 @@ export function roomJoined(state = Map(), room) {
 }
 
 export function roomUpdated(state = Map(), room){
-  return state.set('room', room);
+  let newState = state.set('voteComplete', isVoteComplete(room));
+  return newState.set('room', room);
+}
+
+export function castVote(state = Map(), vote) {
+  return state.set('voteCast', vote);
+}
+
+function isVoteComplete(room) {
+  return room.users.every(room => room.vote !== null && room.vote !== '');
 }
