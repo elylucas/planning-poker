@@ -21,7 +21,10 @@ class Room extends Component{
       <div className="row">
         <div className="col-sm-6">
           {this.props.voteCast ?
-          <VoteSubmitted voteCast={this.props.voteCast} onChangeVote={()=>{this.castVote('')}} voteComplete={this.props.voteComplete} />
+          <VoteSubmitted voteCast={this.props.voteCast}
+            onChangeVote={()=>{this.castVote('')}}
+            onResetVote={()=>{this.props.resetVote(this.props.room.id)}}
+            voteComplete={this.props.voteComplete} />
           :
           <VoteSelect vote={this.castVote.bind(this)} />
           }

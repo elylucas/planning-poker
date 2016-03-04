@@ -2,18 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute } from 'react-router'
 import {Provider} from 'react-redux';
-//import reducer from './reducers';
-
-
 import createHashHistory from 'history/lib/createHashHistory'
+import configureSession from './configureSession';
 import configureSocket from './configureSocket';
 import configureStore from './configureStore';
 
 import ga from 'react-ga';
-
-
-import bootstrap from './theme/bootstrap.theme.css';
-import appCss from './css/app.scss';
 
 import App from   './app';
 import Landing from './components/landing/index.jsx';
@@ -22,10 +16,10 @@ import RoomUX from './components/ux/roomux.jsx';
 
 
 const history = createHashHistory();
-
-ga.initialize('UA-72486368-1');
-
-ga.pageview('/');
+//
+// ga.initialize('UA-72486368-1');
+//
+// ga.pageview('/');
 
 // ga.event({
 //   category: 'Loading',
@@ -33,10 +27,15 @@ ga.pageview('/');
 //   value: 1234
 // });
 
-const socket = configureSocket((cb)=> {
+var session = configureSession();
+
+const socket = configureSocket(session, history, (cb)=> {
   store.dispatch(cb);
-}, history);
-const store = configureStore(socket);
+});
+
+session.socket = socket;
+
+const store = configureStore(session);
 
 ReactDOM.render((
   <Provider store={store}>

@@ -1,18 +1,8 @@
 
 
-export default socket => store => next => action => {
+export default session => store => next => action => {
   if (action.meta) {
-    action.meta(socket, action);
+    action.meta(session, action);
   }
   return next(action);
-}
-
-function socket(){
-  return function store(){
-    return function next(){
-      return function action(){
-
-      }
-    }
-  }
 }

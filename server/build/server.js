@@ -23,12 +23,18 @@ function startServer(store) {
   io.set('origins', 'http://localhost:8080');
   io.on('connection', function (socket) {
 
+    socket.on('hello', function (userId) {
+      socket['userId'] = userId;
+      console.log('UserId ' + userId + ' connected');
+    });
+
     socket.on('createRoom', function (name) {
       var roomId = (0, _roomIdGen2.default)();
-      var userId = socket.id;
+      var userId = socket['userId'];
       console.log(name + ' - ' + roomId);
       store.dispatch((0, _action_creators.createRoom)(roomId, { id: userId, name: name, isSpectator: false, isAFK: false, vote: '' }));
       socket.join('room-' + roomId);
+      socket['roomId'] = roomId;
 
       var room = store.getState().rooms.find(function (room) {
         return room.get('id') === roomId;
@@ -38,7 +44,7 @@ function startServer(store) {
 
     socket.on('joinRoom', function (name, roomId) {
       console.log(name, roomId);
-      var userId = (0, _roomIdGen2.default)();
+      var userId = socket['userId'];
       store.dispatch((0, _action_creators.joinRoom)(roomId, { id: userId, name: name, isSpectator: false, isAFK: false, vote: '' }));
 
       var room = store.getState().rooms.find(function (room) {
@@ -46,15 +52,39 @@ function startServer(store) {
       });
       io.to('room-' + roomId).emit('roomUpdated', room);
 
+      socket['roomId'] = roomId;
+
       socket.join('room-' + roomId);
       socket.emit('joinedRoom', room);
     });
 
-    socket.on('vote', function (vote, roomId) {
+    socket.on('castVote', function (vote, roomId) {
       console.log('vote ' + vote);
       console.log('roomId ' + roomId);
+      store.dispatch((0, _action_creators.castVote)(socket['userId'], roomId, vote));
+      var room = store.getState().rooms.find(function (room) {
+        return room.get('id') === roomId;
+      });
+      io.to('room-' + roomId).emit('roomUpdated', room);
+    });
 
-      store.dispatch((0, _action_creators.castVote)(socket.id, roomId, vote));
+    socket.on('resetVote', function () {
+      var roomId = socket['roomId'];
+      console.log('reseting votes for roomid ' + roomId);
+      store.dispatch((0, _action_creators.resetVote)(roomId));
+      var room = store.getState().rooms.find(function (room) {
+        return room.get('id') === roomId;
+      });
+      io.to('room-' + roomId).emit('roomUpdated', room);
+    });
+
+    socket.on('disconnect', function () {
+      var roomId = socket['roomId'];
+      if (!roomId) {
+        return;
+      }
+      console.log('user ' + socket['userId'] + ' disconnecting from room ' + roomId);
+      store.dispatch((0, _action_creators.leaveRoom)(socket['roomId'], socket['userId']));
       var room = store.getState().rooms.find(function (room) {
         return room.get('id') === roomId;
       });

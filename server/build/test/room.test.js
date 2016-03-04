@@ -101,5 +101,59 @@ describe('Room', function () {
       }]));
     });
   });
+
+  describe('leaveRoom', function () {
+
+    it('should remove the user from the room when a user leaves', function () {
+
+      var user1 = {
+        id: 'user123',
+        name: 'Joe',
+        vote: null,
+        isSpectator: false,
+        isAfk: false
+      };
+
+      var user2 = Object.assign(user1, { id: 'user456' });
+
+      var state = (0, _immutable.fromJS)([{
+        id: 'room123',
+        users: [user1, user2]
+      }]);
+
+      var newState = (0, _rooms.leaveRoom)(state, 'room123', 'user123');
+
+      (0, _chai.expect)(newState).to.equal((0, _immutable.fromJS)([{
+        id: 'room123',
+        users: [user2]
+      }]));
+    });
+  });
+
+  describe('resetVote', function () {
+
+    it('should reset all the votes back to an empty string', function () {
+      var user1 = {
+        id: 'user123',
+        name: 'Joe',
+        vote: '8',
+        isSpectator: false,
+        isAfk: false
+      };
+
+      var user2 = Object.assign(user1, { id: 'user456', vote: '4' });
+      var state = (0, _immutable.fromJS)([{
+        id: 'room123',
+        users: [user1, user2]
+      }]);
+
+      var newState = (0, _rooms.resetVote)(state, 'room123');
+
+      (0, _chai.expect)(newState).to.equal((0, _immutable.fromJS)([{
+        id: 'room123',
+        users: [Object.assign(user1, { vote: '' }), Object.assign(user2, { vote: '' })]
+      }]));
+    });
+  });
 });
 //# sourceMappingURL=room.test.js.map

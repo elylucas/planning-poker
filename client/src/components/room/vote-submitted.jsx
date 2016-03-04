@@ -9,7 +9,7 @@ class VoteSubmitted extends React.Component {
         {!this.props.voteComplete &&
           <button className="btn btn-primary" onClick={()=>{ this.props.onChangeVote()}}>Change Vote</button>
         }
-        <button className="btn btn-primary" onClick={()=>{ this.props.onChangeVote()}}>Reset All Votes</button>
+        <button className="btn btn-primary" onClick={()=>{ this.props.onResetVote()}}>Reset All Votes</button>
       </div>
     )
   }

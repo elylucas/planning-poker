@@ -28,6 +28,14 @@ export function castVote(state = Map(), vote) {
   return state.set('voteCast', vote);
 }
 
+export function resetVote(state = Map(), roomId) {
+  return state;
+}
+
+export function voteReset(state = Map()) {
+  return state.set('voteCast', '');
+}
+
 function isVoteComplete(room) {
   return room.users.every(room => room.vote !== null && room.vote !== '');
 }

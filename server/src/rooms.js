@@ -40,3 +40,14 @@ export function castVote(rooms, userId, roomId, vote) {
   var newRooms = rooms.set(roomIndex, newRoom);
   return newRooms;
 }
+
+export function resetVote(rooms, roomId) {
+  var room = rooms.find(room => room.get('id') === roomId).toJS();
+  var roomIndex = rooms.indexOf(room);
+  room.users.forEach(user => {
+    user.vote = '';
+  });
+  var newRoom = fromJS(room);
+  var newRooms = rooms.set(roomIndex, newRoom);
+  return newRooms;
+}

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {createRoom, joinRoom, leaveRoom, castVote} from '../rooms';
+import {createRoom, joinRoom, leaveRoom, castVote, resetVote} from '../rooms';
 import {Map, List, fromJS} from 'immutable';
 
 describe('Room', function(){
@@ -166,5 +166,44 @@ describe('Room', function(){
     })
 
   });
+
+  describe('resetVote', ()=>{
+
+    it('should reset all the votes back to an empty string', ()=>{
+      var user1 = {
+        id: 'user123',
+        name: 'Joe',
+        vote: '8',
+        isSpectator: false,
+        isAfk: false
+      };
+
+      var user2 = Object.assign(user1, {id: 'user456', vote: '4'});
+      var state = fromJS(
+        [
+          {
+            id: 'room123',
+            users: [user1, user2]
+          }
+        ]
+      );
+
+      let newState = resetVote(state, 'room123');
+
+      expect(newState).to.equal(fromJS(
+        [
+          {
+            id: 'room123',
+            users: [
+              Object.assign(user1, {vote: ''}),
+              Object.assign(user2, {vote: ''})              
+            ]
+          }
+        ]
+      ));
+
+    });
+
+  })
 
 });

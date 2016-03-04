@@ -24,8 +24,14 @@ function rooms() {
     case 'JOIN_ROOM':
       var newRooms = (0, _rooms.joinRoom)(state, action.roomId, action.user);
       return newRooms;
+    case 'LEAVE_ROOM':
+      var newRooms = (0, _rooms.leaveRoom)(state, action.roomId, action.userId);
+      return newRooms;
     case 'CAST_VOTE':
       var newRooms = (0, _rooms.castVote)(state, action.userId, action.roomId, action.vote);
+      return newRooms;
+    case 'RESET_VOTE':
+      var newRooms = (0, _rooms.resetVote)(state, action.roomId);
       return newRooms;
     default:
       return state;

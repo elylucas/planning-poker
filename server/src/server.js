@@ -1,5 +1,5 @@
 import Server from 'socket.io';
-import {createRoom, joinRoom, leaveRoom, castVote} from './action_creators';
+import {createRoom, joinRoom, leaveRoom, castVote, resetVote} from './action_creators';
 import roomIdGen from './util/room-id-gen';
 
 export default function startServer(store){
@@ -8,9 +8,14 @@ export default function startServer(store){
   io.set('origins', 'http://localhost:8080');
   io.on('connection', (socket) => {
 
+    socket.on('hello', (userId) => {
+      socket['userId'] = userId;
+      console.log(`UserId ${userId} connected`);
+    });
+
     socket.on('createRoom', (name) => {
       let roomId = roomIdGen();
-      let userId = socket.id;
+      let userId = socket['userId'];
       console.log(name + ' - ' + roomId);
       store.dispatch(createRoom(roomId,
           {id: userId, name: name, isSpectator: false, isAFK: false, vote: ''}
@@ -26,7 +31,7 @@ export default function startServer(store){
 
     socket.on('joinRoom', (name, roomId) =>{
       console.log(name, roomId)
-      let userId = socket.id;
+      let userId = socket['userId'];
       store.dispatch(joinRoom(roomId,
         {id: userId, name: name, isSpectator: false, isAFK: false, vote: ''}
       ));
@@ -43,16 +48,24 @@ export default function startServer(store){
     socket.on('castVote', (vote, roomId) => {
       console.log('vote ' + vote)
       console.log('roomId ' + roomId)
-      store.dispatch(castVote(socket.id, roomId, vote));
+      store.dispatch(castVote(socket['userId'], roomId, vote));
       let room = store.getState().rooms.find(room => room.get('id') === roomId);
-      io.to('room-' + roomId).emit('roomUpdated', room)
+      io.to('room-' + roomId).emit('roomUpdated', room);
+    });
+
+    socket.on('resetVote', ()=>{
+      let roomId = socket['roomId'];
+      console.log('reseting votes for roomid ' + roomId);
+      store.dispatch(resetVote(roomId));
+      let room = store.getState().rooms.find(room => room.get('id') === roomId);
+      io.to('room-' + roomId).emit('voteReset', room);
     })
 
     socket.on('disconnect', ()=>{
       var roomId = socket['roomId'];
       if(!roomId){ return; }
-      console.log('user ' + socket.id + ' disconnecting from room ' + roomId);
-      store.dispatch(leaveRoom(socket['roomId'], socket.id));
+      console.log('user ' + socket['userId'] + ' disconnecting from room ' + roomId);
+      store.dispatch(leaveRoom(socket['roomId'], socket['userId']));
       var room = store.getState().rooms.find(room => room.get('id') === roomId);
       io.to('room-' + roomId).emit('roomUpdated', room)
     });
