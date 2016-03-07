@@ -14,6 +14,8 @@ import Landing from './components/landing/index.jsx';
 import Room from './components/room/index.jsx';
 import RoomUX from './components/ux/roomux.jsx';
 
+import { initState, setUsername } from './action_creators';
+
 
 const history = createHashHistory();
 //
@@ -37,13 +39,17 @@ session.socket = socket;
 
 const store = configureStore(session);
 
+store.dispatch(initState());
+
+session.username && store.dispatch(setUsername(session.username));
+
 ReactDOM.render((
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" store={store} component={App}>
         <IndexRoute component={Landing} />
         <Route path="room/:roomId" component={Room} />
-        <Route path="ux/room" component={RoomUX} />
+        <Route path="roomux" component={RoomUX} />
       </Route>
     </Router>
   </Provider>

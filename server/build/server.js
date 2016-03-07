@@ -75,7 +75,7 @@ function startServer(store) {
       var room = store.getState().rooms.find(function (room) {
         return room.get('id') === roomId;
       });
-      io.to('room-' + roomId).emit('roomUpdated', room);
+      io.to('room-' + roomId).emit('voteReset', room);
     });
 
     socket.on('disconnect', function () {

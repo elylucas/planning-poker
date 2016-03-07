@@ -11,7 +11,8 @@ export function roomCreated(state = Map(), room) {
 }
 
 export function joinRoom(state = Map(), name, roomId) {
-  return state.set('isRoomJoining', true);
+  state = state.set('name', name);
+  return state.set('isRoomJoining', true);  
 }
 
 export function roomJoined(state = Map(), room) {

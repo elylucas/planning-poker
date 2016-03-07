@@ -6,39 +6,52 @@ import * as actionCreators from '../../action_creators';
 var VelocityComponent = require('velocity-react/velocity-component');
 require('velocity-animate/velocity.ui');
 
-const Landing = React.createClass({
+class Landing extends React.Component{
 
-  getInitialState(){
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       showCreateRoom: false,
       showJoinRoom: false,
+      username: props.username
     }
-  },
+    this.showCreateRoom = this.showCreateRoom.bind(this);
+    this.showJoinRoom = this.showJoinRoom.bind(this);
+    this.handleCreateRoomClick = this.handleCreateRoomClick.bind(this);
+    this.handleJoinRoomClick = this.handleJoinRoomClick.bind(this);
+  }
+
+  // componentWillMount(){
+  //   if(this.props.username){
+  //     this.refs.createRoomName.value = this.props.username;
+  //     this.refs.joinRoomName.value = this.props.username;
+  //   }
+  // }
 
   showCreateRoom(){
     this.setState({
       showCreateRoom: !this.state.showCreateRoom,
       showJoinRoom: false
     })
-  },
+  }
 
   showJoinRoom(){
     this.setState({
       showJoinRoom: !this.state.showJoinRoom,
       showCreateRoom: false
     })
-  },
+  }
 
   handleCreateRoomClick(e) {
     let name = this.refs.createRoomName.value;
     this.props.createRoom(name);
-  },
+  }
 
   handleJoinRoomClick(e) {
     let name = this.refs.joinRoomName.value;
     let roomId = this.refs.roomId.value;
     this.props.joinRoom(name, roomId);
-  },
+  }
 
   render(){
 
@@ -67,7 +80,7 @@ const Landing = React.createClass({
 
                 <div className="form-group">
                   <label for="exampleInputEmail1">Name</label>
-                  <input type="text" className="form-control" ref="createRoomName" placeholder="Name" />
+                  <input type="text" className="form-control" ref="createRoomName" defaultValue={this.state.username} placeholder="Name" />
                 </div>
                 <button className="btn btn-primary" onClick={this.handleCreateRoomClick}>Create Room</button>
                 <button className="btn btn-primary" onClick={this.showCreateRoom}>Cancel</button>
@@ -81,7 +94,7 @@ const Landing = React.createClass({
 
                 <div className="form-group">
                   <label for="exampleInputEmail1">Name</label>
-                  <input type="text" className="form-control" ref="joinRoomName" placeholder="Name" />
+                  <input type="text" className="form-control" ref="joinRoomName" defaultValue={this.state.username} placeholder="Name" />
                 </div>
                 <div className="form-group">
                   <label for="exampleInputEmail1">Room Id</label>
@@ -103,11 +116,11 @@ const Landing = React.createClass({
       </div>
     )
   }
-});
+}
 
 function select(state) {
   return {
-
+    username: state.get('username')
   }
 }
 

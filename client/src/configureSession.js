@@ -3,7 +3,8 @@ import uuid from 'uuid';
 export default function configureSession(){
   let userId = getUserId();
   return {
-    userId: userId
+    userId: userId,
+    username: getName(userId)
   };
 }
 
@@ -14,4 +15,9 @@ function getUserId(){
     sessionStorage.setItem('ap-userId', userId);
   }
   return userId;
+}
+
+function getName(userId){
+  let name = localStorage.getItem(`ap-${userId}-name`);
+  return name;
 }

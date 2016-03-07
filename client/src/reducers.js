@@ -1,8 +1,15 @@
-import { CREATE_ROOM_REQUEST, CREATE_ROOM_RESPONSE, JOIN_ROOM_REQUEST, JOIN_ROOM_RESPONSE, ROOM_UPDATED_ALERT, CAST_VOTE_REQUEST, RESET_VOTE, RESET_VOTE_RESPONSE } from './action_creators';
+import { INIT_STATE, SET_USERNAME, CREATE_ROOM_REQUEST, CREATE_ROOM_RESPONSE, JOIN_ROOM_REQUEST, JOIN_ROOM_RESPONSE, ROOM_UPDATED_ALERT, CAST_VOTE_REQUEST, RESET_VOTE, RESET_VOTE_RESPONSE } from './action_creators';
 import { createRoom, roomCreated, joinRoom, roomJoined , roomUpdated, castVote, resetVote, voteReset} from './room';
+import { Map } from 'immutable';
 
 function room(state, action) {
   switch (action.type) {
+    case INIT_STATE:
+      return new Map();
+      break;
+    case SET_USERNAME:
+      return state.set('username', action.username);
+      break;
     case CREATE_ROOM_REQUEST:
       return createRoom(state, action.name);
       break;

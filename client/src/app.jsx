@@ -6,10 +6,6 @@ import appCss from './css/app.scss';
 
 var App = React.createClass({
 
-  createRoom(name) {
-    this.props.route.store.dispatch(createRoom(name));
-  },
-
   render(){
     return(
       <div>
