@@ -4,6 +4,7 @@ export default function configureSession(){
   let userId = getUserId();
   return {
     userId: userId,
+    roomId: getRoomId(userId),
     username: getName(userId)
   };
 }
@@ -15,6 +16,11 @@ function getUserId(){
     sessionStorage.setItem('ap-userId', userId);
   }
   return userId;
+}
+
+function getRoomId(userId){
+  let roomId = sessionStorage.getItem(`ap-${userId}-roomId`);
+  return roomId;
 }
 
 function getName(userId){

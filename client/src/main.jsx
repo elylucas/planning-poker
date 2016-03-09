@@ -29,6 +29,8 @@ const history = createHashHistory();
 //   value: 1234
 // });
 
+
+//Todo: figure out a way to get around this circular dependency between socket and store
 var session = configureSession();
 
 const socket = configureSocket(session, history, (cb)=> {

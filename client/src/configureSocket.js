@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import {createRoom, roomCreated, roomUpdated, voteReset} from './action_creators';
+import {createRoom, roomCreated, roomUpdated, voteReset, joinRoom} from './action_creators';
 
 export default function configureSocket(session, history, dispatch){
   var socket = io('http://localhost:8090');
@@ -25,6 +25,22 @@ export default function configureSocket(session, history, dispatch){
   socket.on('voteReset', (room) => {
     dispatch(voteReset());
     dispatch(roomUpdated(room));
+  });
+
+  socket.on('reconnecting', (number)=>{
+    console.log('reconnecting: ' + number);
+  });
+
+  socket.on('reconnect_failed', ()=>{
+    console.log('could not reconnect');
+  });
+
+  socket.on('reconnect', ()=>{
+    if(session.username && session.userId){
+      let roomId = sessionStorage.getItem(`ap-${session.userId}-roomId`);
+      dispatch(joinRoom(session.username, roomId));
+    }
+    console.log('reconnected');
   });
 
   return socket;

@@ -5,11 +5,16 @@ import { combineReducers } from 'redux';
 
 export default function rooms(state = List(), action){
   switch(action.type){
+    //Todo: clean up ugly login in this switch statement
     case 'CREATE_ROOM':
-      var newRooms = createRoom(state, action.roomId, action.user);
-      return newRooms;
     case 'JOIN_ROOM':
-      var newRooms = joinRoom(state, action.roomId, action.user);
+      let room = state.find(room => room.get('id') === action.roomId);
+      let newRooms;
+      if(!room){
+        var newRooms = createRoom(state, action.roomId, action.user);
+      } else {
+        newRooms = joinRoom(state, action.roomId, action.user);
+      }
       return newRooms;
     case 'LEAVE_ROOM':
       var newRooms = leaveRoom(state, action.roomId, action.userId);

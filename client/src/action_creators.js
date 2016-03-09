@@ -50,14 +50,22 @@ export function joinRoom(name, roomId){
 export function roomCreated(room){
   return{
     type: CREATE_ROOM_RESPONSE,
-    room
+    room,
+    meta: (session, action) => {
+      let userId = sessionStorage.getItem('ap-userId');
+      sessionStorage.setItem(`ap-${userId}-roomId`, room.id);
+    }
   };
 }
 
 export function roomJoined(room){
   return{
     type: JOIN_ROOM_RESPONSE,
-    room
+    room,
+    meta: (session, action) => {
+      let userId = sessionStorage.getItem('ap-userId');
+      sessionStorage.setItem(`ap-${userId}-roomId`, room.id);
+    }
   };
 }
 
