@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './components/header/header.jsx';
-import {createRoom, roomCreated} from './action_creators';
+import StatusBar from './components/header/status-bar.jsx';
+import { connect } from 'react-redux'
 import bootstrap from './theme/bootstrap.theme.css';
 import appCss from './css/app.scss';
 
@@ -10,6 +11,7 @@ var App = React.createClass({
     return(
       <div>
         <Header />
+        <StatusBar connectionStatus={this.props.connectionStatus}/>
         <div className="container">
           {this.props.children}
         </div>
@@ -18,4 +20,10 @@ var App = React.createClass({
   }
 });
 
-export default App;
+function select(state) {
+  return {
+    connectionStatus: state.get('connectionStatus')
+  }
+}
+
+export default connect(select)(App);

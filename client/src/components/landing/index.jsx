@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import * as actionCreators from '../../action_creators';
+import jIf from '../../util/jsx-if';
 
 var VelocityComponent = require('velocity-react/velocity-component');
 require('velocity-animate/velocity.ui');
@@ -66,6 +67,26 @@ class Landing extends React.Component{
       margin: '10px'
     }
 
+    function getValue(val){
+      console.log('in getValue ' + val);
+      return val;
+    }
+    //
+    // let component;
+    // if(false){
+    //   component = <div>{getValue('true')}</div>
+    // } else {
+    //   component = <div>{getValue('false')}</div>
+    // }
+
+    function test(val){
+      console.log(val)
+    }
+
+    let user = {
+      isAuthed: true
+    };
+
     return(
       <div style={containerStyle}>
         <div>
@@ -73,6 +94,26 @@ class Landing extends React.Component{
           <div>
             To start, either create a new room, or join an existing room by entering the room number.
           </div>
+
+          <div>
+          {
+            (()=>{
+              if(false) {
+                <div>{test('truthy')}truthy</div>
+              } else{
+                <div>{test('falsey')}falsey</div>
+              }
+            })()
+          }
+          </div>
+
+          {
+            jIf(true, <div>{getValue('if')}</div>)
+              .elsif(false, <div>{getValue('else if')}</div>)
+              .els(<div>{getValue('else')}</div>)()
+          }
+
+          { user.isAuthed && <div>Welcome User!</div> }
 
           <VelocityComponent animation={this.state.showCreateRoom ? 'slideDown' : 'slideUp'} duration={150}>
             <div>

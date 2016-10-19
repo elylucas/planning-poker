@@ -8,6 +8,7 @@ export const ROOM_UPDATED_ALERT = 'ROOM_UPDATED_ALERT';
 export const CAST_VOTE_REQUEST = 'CAST_VOTE_REQUEST';
 export const RESET_VOTE = 'RESET_VOTE';
 export const RESET_VOTE_RESPONSE = 'RESET_VOTE_RESPONSE';
+export const SET_CONNECTION_STATE = 'SET_CONNECTION_STATE';
 
 export function initState(){
   return {
@@ -94,6 +95,13 @@ export function resetVote(roomId){
     meta: (session, action) => {
       session.socket.emit('resetVote', action.roomId);
     }
+  }
+}
+
+export function setConnectionStatus(status) {
+  return {
+    type: SET_CONNECTION_STATE,
+    status
   }
 }
 
