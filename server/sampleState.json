@@ -1,0 +1,23 @@
+{
+  "rooms": [
+    {
+      "id": "1234",
+      "users": [
+        {
+          "id": "1",
+          "name": "Ely",
+          "vote": "1",
+          "isSpectator": false,
+          "isAFK": false
+        },
+        {
+          "id": "2",
+          "name": "Joel",
+          "vote": null,
+          "isSpectator": false,
+          "isAFK": false
+        }
+      ]
+    }
+  ]
+}

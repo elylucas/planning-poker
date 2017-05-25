@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/store.js"],"names":[],"mappings":";;;;;kBAGwB,SAAS;;;;;;;;;;AAAlB,SAAS,SAAS,GAAE;AACjC,SAAO,WAJD,WAAW,oBAIU,CAAC;CAC7B","file":"store.js","sourcesContent":["import {createStore} from 'redux';\nimport reducer from './reducer';\n\nexport default function makeStore(){\n  return createStore(reducer);\n}\n"]}
